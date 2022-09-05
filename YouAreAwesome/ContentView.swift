@@ -24,7 +24,7 @@ struct ContentView: View {
                 .frame(height: 150)
                 .frame( maxWidth: .infinity)
             //    .border(.orange, width: 1)
-             //   .padding()
+                .padding()
             
             Spacer()
             
