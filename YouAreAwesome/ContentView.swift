@@ -12,14 +12,6 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("You Have skills")
-                .font(.largeTitle)
-                .fontWeight(.black)
-                .foregroundColor(Color("Gold-BC"))
-                .padding()
-                .background(Color("Maroon-BC"))
-                .cornerRadius(15)
-            
             Spacer()
             
             Text(messageString)
@@ -31,10 +23,12 @@ struct ContentView: View {
                 .padding()
                 .frame(height: 150)
                 .frame( maxWidth: .infinity)
-//                .border(.orange, width: 1)
+            //    .border(.orange, width: 1)
                 .padding()
             
             Spacer()
+            
+            
             
             HStack{
                 Button("Awesome") {
@@ -50,11 +44,12 @@ struct ContentView: View {
                 }
                 .buttonStyle(.borderedProminent)
             }
-//            .border(.purple, width:5)
+            //            .border(.purple, width:5)
             .padding()
         }
-        }
     }
+}
+    
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
