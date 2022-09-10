@@ -29,27 +29,26 @@ struct ContentView: View {
             
             
             
-          
-                Button("Show Message") {
-                    let message1 = "You are awesome"
-                    let message2 = "You are great"
-                    //action when but is pressed
-                    if messageString == message1{
-                        messageString = message2
-                    } else { messageString = message1}
-                }
-                .buttonStyle(.borderedProminent)
+            
+            Button("Show Message") {
+                let message1 = "You are awesome"
+                let message2 = "You are great"
+                //action when but is pressed
+                messageString = (messageString == message1 ? message2 : message1)
+            }
+                    .buttonStyle(.borderedProminent)
                 
-
+                
                     .padding()
             
+            }
+        }
+        
+        
+        struct ContentView_Previews: PreviewProvider {
+            static var previews: some View {
+                ContentView()
+            }
         }
     }
-    
-    
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView()
-        }
-    }
-}
+
