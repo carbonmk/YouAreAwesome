@@ -47,19 +47,9 @@ struct ContentView: View {
                                 "You make me smile",
                                 "when the genius bar needs help they call you"]
                 
-                messageString = messages[messageNumber]
-                messageNumber += 1
+                messageString = messages[Int.random(in: 0...messages.count-1)]
                 
-                if messageNumber == messages.count {
-                    messageNumber = 0
-                }
-                
-                imageName = "image\(imageNumber)"
-                imageNumber += 1
-                if imageNumber > 9 {
-                    imageNumber = 0
-                }
-                print(imageNumber)
+                imageName = "image\(Int.random(in: 0...9))"
                 
                 
             }
