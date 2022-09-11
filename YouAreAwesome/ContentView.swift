@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var messageString = "Namaste"
     @State private var imageName = ""
     @State private var imageNumber = 0
-    
+    @State private var messageNumber = 0
     
     var body: some View {
         VStack {
@@ -40,12 +40,20 @@ struct ContentView: View {
             
             
             Button("Show Message") {
-                let message1 = "You are awesome"
-                let message2 = "You are great"
-             
-                messageString = (messageString == message1 ? message2 : message1)
-//                imageName = (imageName == "image0" ? "image1" : "image0")
-                //TODO: Update the imageName variable
+                let messages = ["You are awesome",
+                                "You are great",
+                                "You are fantastic",
+                                "fabulous? thats you",
+                                "You make me smile",
+                                "when the genius bar needs help they call you"]
+                
+                messageString = messages[messageNumber]
+                messageNumber += 1
+                
+                if messageNumber == messages.count {
+                    messageNumber = 0
+                }
+                
                 imageName = "image\(imageNumber)"
                 imageNumber += 1
                 if imageNumber > 9 {
@@ -55,19 +63,19 @@ struct ContentView: View {
                 
                 
             }
-                    .buttonStyle(.borderedProminent)
-                
-                
-                    .padding()
+            .buttonStyle(.borderedProminent)
             
-            }
-        }
-        
-        
-        struct ContentView_Previews: PreviewProvider {
-            static var previews: some View {
-                ContentView()
-            }
+            
+            .padding()
+            
         }
     }
+    
+    
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
+    }
+}
 
