@@ -4,7 +4,6 @@
 //
 //  Created by Michael Carbone on 8/31/22.
 //
-
 import SwiftUI
 
 struct ContentView: View {
@@ -32,14 +31,8 @@ struct ContentView: View {
                 .cornerRadius(30)
                 .shadow(radius: 30)
                 .padding()
+            
             Spacer()
-            
-           
-            
-         
-            
-            
-            
             
             Button("Show Message") {
                 let messages = ["You are awesome",
@@ -63,7 +56,6 @@ struct ContentView: View {
                 lastImageNumber = imageNumber
             }
             .buttonStyle(.borderedProminent)
-            
             
             .padding()
             
