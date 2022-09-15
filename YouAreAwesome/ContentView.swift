@@ -5,12 +5,17 @@
 //  Created by Michael Carbone on 8/31/22.
 //
 import SwiftUI
+import AVFAudio
 
 struct ContentView: View {
-    @State private var messageString = "Namaste"
+    @State private var messageString = ""
     @State private var imageName = ""
     @State private var lastMessageNumber = -1
     @State private var lastImageNumber = -1
+    @State private var lastSoundNumber = -1
+    @State private var audioPlayer: AVAudioPlayer!
+    
+    
     
     var body: some View {
         VStack {
@@ -41,19 +46,17 @@ struct ContentView: View {
                                 "fabulous? thats you",
                                 "You make me smile",
                                 "when the genius bar needs help they call you"]
-                var messageNumber: Int
-                repeat {
-                    messageNumber = Int.random(in: 0...messages.count-1)
-                }while messageNumber == lastMessageNumber
-                messageString = messages[messageNumber]
-                lastMessageNumber = messageNumber
                 
-                var imageNumber: Int
-                repeat {
-                    imageNumber = Int.random(in: 0...9)
-                }while imageNumber == lastImageNumber
-                imageName = "image\(imageNumber)"
-                lastImageNumber = imageNumber
+                lastMessageNumber = nonRepeatingRandom(upperBound: messages.count-1, lastNumber: lastMessageNumber)
+                messageString = messages[lastMessageNumber]
+                
+                lastImageNumber = nonRepeatingRandom(upperBound: 9, lastNumber: lastImageNumber)
+                imageName = "image\(lastImageNumber)"
+                
+                lastSoundNumber = nonRepeatingRandom(upperBound: 5, lastNumber: lastSoundNumber)
+                playSound(soundName: "sound\(lastSoundNumber)")
+                
+                
             }
             .buttonStyle(.borderedProminent)
             
@@ -62,11 +65,32 @@ struct ContentView: View {
         }
     }
     
-    
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView()
+    func nonRepeatingRandom(upperBound: Int, lastNumber: Int) -> Int {
+        var newNumber: Int
+        repeat {
+            newNumber = Int.random(in: 0...upperBound)
+        }while newNumber == lastNumber
+        return newNumber
+        
+        
+    }
+    func playSound(soundName: String) {
+        guard let soundFile = NSDataAsset(name: soundName) else {
+            print("🤬 Could not read file named \(soundName)")
+            return
+        }
+        do {
+            audioPlayer = try AVAudioPlayer(data: soundFile.data)
+            audioPlayer.play()
+        } catch {
+            print("🤪 ERROR: \(error.localizedDescription) creating audio player")
         }
     }
 }
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
 
