@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var lastImageNumber = -1
     @State private var lastSoundNumber = -1
     @State private var audioPlayer: AVAudioPlayer!
+    @State private var soundIsOn = true
     
     
     
@@ -39,6 +40,17 @@ struct ContentView: View {
             
             Spacer()
             
+            HStack{
+                Text("Sound on:")
+                Toggle("Sound on:", isOn: $soundIsOn)
+                    .labelsHidden()
+                    .onChange(of: soundIsOn) { _ in
+                        if audioPlayer != nil && audioPlayer.isPlaying {
+                            audioPlayer.stop()
+                        }
+                    }
+            
+            Spacer()
             Button("Show Message") {
                 let messages = ["You are awesome",
                                 "You are great",
@@ -54,38 +66,42 @@ struct ContentView: View {
                 imageName = "image\(lastImageNumber)"
                 
                 lastSoundNumber = nonRepeatingRandom(upperBound: 5, lastNumber: lastSoundNumber)
-                playSound(soundName: "sound\(lastSoundNumber)")
                 
+                if soundIsOn {
+                    playSound(soundName: "sound\(lastSoundNumber)")
+                }
                 
             }
-            .buttonStyle(.borderedProminent)
-            
-            .padding()
             
         }
+        .buttonStyle(.borderedProminent)
+        
+        .padding()
+        
     }
+}
+
+func nonRepeatingRandom(upperBound: Int, lastNumber: Int) -> Int {
+    var newNumber: Int
+    repeat {
+        newNumber = Int.random(in: 0...upperBound)
+    }while newNumber == lastNumber
+    return newNumber
     
-    func nonRepeatingRandom(upperBound: Int, lastNumber: Int) -> Int {
-        var newNumber: Int
-        repeat {
-            newNumber = Int.random(in: 0...upperBound)
-        }while newNumber == lastNumber
-        return newNumber
-        
-        
+    
+}
+func playSound(soundName: String) {
+    guard let soundFile = NSDataAsset(name: soundName) else {
+        print("🤬 Could not read file named \(soundName)")
+        return
     }
-    func playSound(soundName: String) {
-        guard let soundFile = NSDataAsset(name: soundName) else {
-            print("🤬 Could not read file named \(soundName)")
-            return
-        }
-        do {
-            audioPlayer = try AVAudioPlayer(data: soundFile.data)
-            audioPlayer.play()
-        } catch {
-            print("🤪 ERROR: \(error.localizedDescription) creating audio player")
-        }
+    do {
+        audioPlayer = try AVAudioPlayer(data: soundFile.data)
+        audioPlayer.play()
+    } catch {
+        print("🤪 ERROR: \(error.localizedDescription) creating audio player")
     }
+}
 }
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
