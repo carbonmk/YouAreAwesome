@@ -30,7 +30,6 @@ struct ContentView: View {
                 .padding()
                 .animation(.easeInOut(duration: 0.15), value: messageString)
             
-            
             Image(imageName)
                 .resizable()
                 .scaledToFit()
@@ -50,65 +49,61 @@ struct ContentView: View {
                             audioPlayer.stop()
                         }
                     }
+                
+                
+                Spacer()
+                Button("Show Message") {
+                    let messages = ["You are awesome",
+                                    "You are great",
+                                    "You are fantastic",
+                                    "fabulous? thats you",
+                                    "You make me smile",
+                                    "when the genius bar needs help they call you"]
                     
-            
-            Spacer()
-            Button("Show Message") {
-                let messages = ["You are awesome",
-                                "You are great",
-                                "You are fantastic",
-                                "fabulous? thats you",
-                                "You make me smile",
-                                "when the genius bar needs help they call you"]
-                
-                lastMessageNumber = nonRepeatingRandom(upperBound: messages.count-1, lastNumber: lastMessageNumber)
-                messageString = messages[lastMessageNumber]
-                
-                lastImageNumber = nonRepeatingRandom(upperBound: 9, lastNumber: lastImageNumber)
-                imageName = "image\(lastImageNumber)"
-                
-                lastSoundNumber = nonRepeatingRandom(upperBound: 5, lastNumber: lastSoundNumber)
-                
-                if soundIsOn {
-                    playSound(soundName: "sound\(lastSoundNumber)")
+                    lastMessageNumber = nonRepeatingRandom(upperBound: messages.count-1, lastNumber: lastMessageNumber)
+                    messageString = messages[lastMessageNumber]
+                    
+                    lastImageNumber = nonRepeatingRandom(upperBound: 9, lastNumber: lastImageNumber)
+                    imageName = "image\(lastImageNumber)"
+                    
+                    lastSoundNumber = nonRepeatingRandom(upperBound: 5, lastNumber: lastSoundNumber)
+                    
+                    if soundIsOn {
+                        playSound(soundName: "sound\(lastSoundNumber)")
+                    }
+                    
                 }
                 
             }
-            
+            .buttonStyle(.borderedProminent)
+            .tint(.accentColor)
+            .padding()
         }
-        .buttonStyle(.borderedProminent)
-        .tint(.accentColor)
-        .padding()
+    }
+    
+    func nonRepeatingRandom(upperBound: Int, lastNumber: Int) -> Int {
+        var newNumber: Int
+        repeat {
+            newNumber = Int.random(in: 0...upperBound)
+        }while newNumber == lastNumber
+        return newNumber
         
     }
-}
-
-func nonRepeatingRandom(upperBound: Int, lastNumber: Int) -> Int {
-    var newNumber: Int
-    repeat {
-        newNumber = Int.random(in: 0...upperBound)
-    }while newNumber == lastNumber
-    return newNumber
-    
-    
-}
-func playSound(soundName: String) {
-    guard let soundFile = NSDataAsset(name: soundName) else {
-        print("🤬 Could not read file named \(soundName)")
-        return
+    func playSound(soundName: String) {
+        guard let soundFile = NSDataAsset(name: soundName) else {
+            print("🤬 Could not read file named \(soundName)")
+            return
+        }
+        do {
+            audioPlayer = try AVAudioPlayer(data: soundFile.data)
+            audioPlayer.play()
+        } catch {
+            print("🤪 ERROR: \(error.localizedDescription) creating audio player")
+        }
     }
-    do {
-        audioPlayer = try AVAudioPlayer(data: soundFile.data)
-        audioPlayer.play()
-    } catch {
-        print("🤪 ERROR: \(error.localizedDescription) creating audio player")
-    }
-}
 }
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
-
-
